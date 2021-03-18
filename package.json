@@ -1,0 +1,20 @@
+{
+  "name": "no-nsfw-content",
+  "version": "0.0.1",
+  "description": "A discord bot with intention to block the nsfw contents",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vinicius Santos",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.34"
+  }
+}
