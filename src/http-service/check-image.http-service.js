@@ -7,6 +7,7 @@ let timeTried = 0;
 
 async function checkImageContent(image) {
     let result = { urlImage: '', isNsfwContent: true };
+    console.log(image);
     await axios.post(`${URL_BASE}/v1/image-content/check`, {
         urlImage: `${image}`,
     }).then(async response => {
@@ -31,7 +32,8 @@ const isNsfwContent = (predictions) => {
     else if (predictProbability.drawing > 0.90) return false;
     else if ((predictProbability.drawing + predictProbability.hentai) > 0.90) return true;
     else if ((predictProbability.neutral + predictProbability.drawing) > 0.85) return false;
-    else if (predictProbability.sexy > 0.90) return PERMIT_SEXY_CONTENT === 'true' ? false : true;
+    else if (predictProbability.sexy < 0.95 && predictProbability.sexy > 0.70) return PERMIT_SEXY_CONTENT === 'true' ? false : true;
+    else if (predictProbability.sexy > 0.94) return true;
     else if (predictProbability.porn > 0.90) return true;
     else if ((predictProbability.porn + predictProbability.sexy) > 0.85) return true;
     else if (predictProbability.hentai > 0.90) return true;

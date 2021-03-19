@@ -7,16 +7,14 @@ const checkImageContent = require('../http-service/check-image.http-service');
 function checkImageUrl(client) {
     client.on('message', async message => {
         if (message.author.tag != client.user.tag) {
+            if (isGif(message.embeds[0])) {
+                return;
+            }
             if (haveUrl(message)) {
-                if (isGif(message.embeds[0])) {
-                    const image = `${message.embeds[0].url}.gif`;
-                    prepareImageContentToCheck(message, image);
-                } else if (haveUrl(message)) {
-                    const image = message;
-                    prepareImageContentToCheck(message, image);
-                } else {
-                    checkSendedImage(message);
-                }
+                const image = message;
+                prepareImageContentToCheck(message, image);
+            } else {
+                checkSendedImage(message);
             }
         }
     });
