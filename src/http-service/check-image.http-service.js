@@ -6,23 +6,22 @@ const PERMIT_SEXY_CONTENT = process.env.PERMIT_SEXY_CONTENT ? process.env.PERMIT
 let timeTried = 0;
 
 async function checkImageContent(image) {
-    let result = { urlImage: '', isNsfwContent: true };
+    let result = { urlImage: '', isNsfwContent: true, error: { response: { status: 0, statusText: '' } } };
     console.log(image);
     await axios.post(`${URL_BASE}/v1/image-content/check`, {
         urlImage: `${image}`,
     }).then(async response => {
         result.urlImage = await response.data.urlImage;
         result.isNsfwContent = await isNsfwContent(response.data.predictions);
+        result.error = null;
     }, error => {
-        while (timeTried < 3) { result = tryAgain(image); }
+        result.urlImage = null;
+        result.isNsfwContent = null;
+        result.error.response.status = error.response.status;
+        result.error.response.statusText = error.response.statusText;
     });
     console.log(result);
     return result
-}
-
-const tryAgain = async (image) => {
-    timeTried++;
-    return await checkImageContent(image);
 }
 
 const isNsfwContent = (predictions) => {
