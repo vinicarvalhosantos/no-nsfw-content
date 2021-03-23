@@ -46,12 +46,12 @@ const sendEmbedMessage = async (urlImage, message, messageWaiting, isNsfw = fals
     }
 }
 
-const urlIsJpgOrPng = (urlImage) => {
+const urlIsJpgPngOrGif = (urlImage) => {
     const urlSplitted = urlImage.split('/');
     const imageName = urlSplitted[urlSplitted.length - 1];
     const imageNameSplitted = imageName.split('.');
     const imageExtension = imageNameSplitted[imageNameSplitted.length - 1];
-    if (imageExtension === 'png' || imageExtension === 'jpeg' || imageExtension === 'jpg') {
+    if (imageExtension === 'png' || imageExtension === 'jpeg' || imageExtension === 'jpg' || imageExtension === 'gif') {
         return true
     }
     return false;
@@ -67,4 +67,4 @@ const isGif = (embed) => {
     return false;
 }
 
-module.exports = { prepareImageContentToCheck, checkSendedImage, urlIsJpgOrPng, haveUrl, isGif }
+module.exports = { prepareImageContentToCheck, checkSendedImage, urlIsJpgPngOrGif, haveUrl, isGif }

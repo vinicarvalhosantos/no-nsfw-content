@@ -2,27 +2,7 @@ const axios = require('axios');
 require('dotenv').config();
 const URL_BASE = process.env.API_URL_BASE;
 const PERMIT_SEXY_CONTENT = process.env.PERMIT_SEXY_CONTENT ? process.env.PERMIT_SEXY_CONTENT : '';
-
-let timeTried = 0;
-
-async function checkImageContent(image) {
-    let result = { urlImage: '', isNsfwContent: true, error: { response: { status: 0, statusText: '' } } };
-    console.log(image);
-    await axios.post(`${URL_BASE}/v1/image-content/check`, {
-        urlImage: `${image}`,
-    }).then(async response => {
-        result.urlImage = await response.data.urlImage;
-        result.isNsfwContent = await isNsfwContent(response.data.predictions);
-        result.error = null;
-    }, error => {
-        result.urlImage = null;
-        result.isNsfwContent = null;
-        result.error.response.status = error.response.status;
-        result.error.response.statusText = error.response.statusText;
-    });
-    console.log(result);
-    return result
-}
+const utils = require('../utils/index');
 
 const isNsfwContent = (predictions) => {
     const predictProbability = getPredicts(predictions);
@@ -31,7 +11,7 @@ const isNsfwContent = (predictions) => {
     else if (predictProbability.drawing > 0.90) return false;
     else if ((predictProbability.drawing + predictProbability.hentai) > 0.90) return true;
     else if ((predictProbability.neutral + predictProbability.drawing) > 0.85) return false;
-    else if (predictProbability.sexy < 0.95 && predictProbability.sexy > 0.70) return PERMIT_SEXY_CONTENT === 'true' ? false : true;
+    else if (predictProbability.sexy < 0.95 && predictProbability.sexy > 0.75) return PERMIT_SEXY_CONTENT === 'true' ? false : true;
     else if (predictProbability.sexy > 0.94) return true;
     else if (predictProbability.porn > 0.90) return true;
     else if ((predictProbability.porn + predictProbability.sexy) > 0.85) return true;
@@ -49,23 +29,23 @@ const getPredicts = (predictions) => {
                 switch (predictions[predictionIndex][frameIndex].className) {
                     case 'Neutral':
                         let neutralProbability = predictions[predictionIndex][frameIndex].probability;
-                        predictProbability.neutral = getHighestValue(neutralProbability, predictProbability.neutral);
+                        predictProbability.neutral = utils.getHighestValue(neutralProbability, predictProbability.neutral);
                         break;
                     case 'Drawing':
                         let drawingProbability = predictions[predictionIndex][frameIndex].probability;
-                        predictProbability.drawing = getHighestValue(drawingProbability, predictProbability.drawing);
+                        predictProbability.drawing = utils.getHighestValue(drawingProbability, predictProbability.drawing);
                         break;
                     case 'Sexy':
                         let sexyProbability = predictions[predictionIndex][frameIndex].probability;
-                        predictProbability.sexy = getHighestValue(sexyProbability, predictProbability.sexy);
+                        predictProbability.sexy = utils.getHighestValue(sexyProbability, predictProbability.sexy);
                         break;
                     case 'Porn':
                         let pornProbability = predictions[predictionIndex][frameIndex].probability;
-                        predictProbability.porn = getHighestValue(pornProbability, predictProbability.porn);
+                        predictProbability.porn = utils.getHighestValue(pornProbability, predictProbability.porn);
                         break;
                     case 'Hentai':
                         let hentaiProbability = predictions[predictionIndex][frameIndex].probability;
-                        predictProbability.hentai = getHighestValue(hentaiProbability, predictProbability.hentai);
+                        predictProbability.hentai = utils.getHighestValue(hentaiProbability, predictProbability.hentai);
                         break;
                 }
             }
@@ -92,8 +72,21 @@ const getPredicts = (predictions) => {
     return predictProbability;
 }
 
-const getHighestValue = (firstValue, secondValue) => {
-    return firstValue > secondValue ? firstValue : secondValue;
+module.exports = async (image) => {
+    let result = { urlImage: '', isNsfwContent: true, error: { response: { status: 0, statusText: '' } } };
+    console.log(image);
+    await axios.post(`${URL_BASE}/v1/image-content/check`, {
+        urlImage: `${image}`,
+    }).then(async response => {
+        result.urlImage = await response.data.urlImage;
+        result.isNsfwContent = await isNsfwContent(response.data.predictions);
+        result.error = null;
+    }, error => {
+        result.urlImage = null;
+        result.isNsfwContent = null;
+        result.error.response.status = error.response.status;
+        result.error.response.statusText = error.response.statusText;
+    });
+    console.log(result);
+    return result;
 }
-
-module.exports = exports = checkImageContent;

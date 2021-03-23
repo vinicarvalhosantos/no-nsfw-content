@@ -6,7 +6,7 @@ module.exports = (client) => {
             if (checkImageUtils.isGif(message.embeds[0])) {
                 return;
             }
-            if (checkImageUtils.haveUrl(message) && checkImageUtils.urlIsJpgOrPng(message.content)) {
+            if (checkImageUtils.haveUrl(message) && checkImageUtils.urlIsJpgPngOrGif(message.content)) {
                 const image = message;
                 checkImageUtils.prepareImageContentToCheck(message, image);
             } else {
