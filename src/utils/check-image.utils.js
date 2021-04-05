@@ -1,6 +1,9 @@
 const Discord = require('discord.js');
 const checkImageContent = require('../http-service/check-image.http-service');
 const textMessage = require('../text/index');
+/*const TIMEOUT_ROLES = ['Helper', 'Moderator', 'Administrator'];
+const KICK_ROLES = ['Moderator', 'Administrator'];
+const BAN_ROLES = ['Administrator']*/
 
 
 /**
