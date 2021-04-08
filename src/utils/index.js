@@ -26,5 +26,23 @@ const checkIfMemberHasRole = (member, roles) => {
     return false;
 }
 
+/**
+ * This method is responsable to get the guild's default text channel.
+ * 
+ * @param {Discord.Guild} guild Guild to get the default text channel.
+ * @returns {Discord.Channel} returns a channel.
+ */
+const getDefaultChannel = (guild) => {
+    let defaultChannel = '';
+    guild.channels.cache.forEach((channel) => {
+        if (channel.type === 'text' && defaultChannel === '') {
+            if (channel.permissionsFor(guild.me).has('SEND_MESSAGES')) {
+                defaultChannel = channel;
+            }
+        }
+    });
+    return defaultChannel;
+}
 
-module.exports = { getHighestValue, checkIfMemberHasRole }
+
+module.exports = { getHighestValue, checkIfMemberHasRole, getDefaultChannel }

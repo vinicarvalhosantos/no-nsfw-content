@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Discord = require('discord.js');
 const textMessage = require('../text/index');
+const utils = require('../utils/index');
 const TOKEN = process.env.TOKEN;
 
 module.exports = (client) => {
@@ -11,15 +12,7 @@ module.exports = (client) => {
     });
 
     client.on('guildCreate', async guild => {
-        let defaultChannel = '';
-        guild.channels.cache.forEach((channel) => {
-            if (channel.type === 'text' && defaultChannel === '') {
-                if (channel.permissionsFor(guild.me).has('SEND_MESSAGES')) {
-                    defaultChannel = channel;
-                }
-            }
-        });
-
+        const defaultChannel = utils.getDefaultChannel(guild);
         const embed = await new Discord.MessageEmbed()
             .setAuthor(client.user.tag, client.user.avatarURL())
             .setColor('#800080')

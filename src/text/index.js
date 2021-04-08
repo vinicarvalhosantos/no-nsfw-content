@@ -10,12 +10,12 @@ const EMBED_NSFW_MESSAGE_ACTION_BAN_TITLE = `:three: Ban`;
 const EMBED_NSFW_MESSAGE_ACTION_BAN = `Ban from this server.`;
 
 //ON BOT JOIN A SERVER
-const EMBED_WELCOME_MESSAGE_TITLE = `Hello {guild}!`
-const EMBED_WELCOME_MESSAGE = `Our team are very happy with your preference! We are working very hard to make your discord server safer, we hope you enjoy it.`
-const EMBED_WELCOME_MESSAGE_WEBSITE_TITLE = `:globe_with_meridians: Website`
-const EMBED_WELCOME_MESSAGE_WEBSITE = `https://nonsfwcontent.com`
-const EMBED_WELCOME_MESSAGE_DISCORD_TITLE = `:mobile_phone: Discord`
-const EMBED_WELCOME_MESSAGE_DISCORD = `https://discord.gg/dn98Bs9M`
+const EMBED_WELCOME_MESSAGE_TITLE = `Hello {guild}!`;
+const EMBED_WELCOME_MESSAGE = `Our team are very happy with your preference! We are working very hard to make your discord server safer, we hope you enjoy it.`;
+const EMBED_WELCOME_MESSAGE_WEBSITE_TITLE = `:globe_with_meridians: Website`;
+const EMBED_WELCOME_MESSAGE_WEBSITE = `https://nonsfwcontent.com`;
+const EMBED_WELCOME_MESSAGE_DISCORD_TITLE = `:mobile_phone: Discord`;
+const EMBED_WELCOME_MESSAGE_DISCORD = `https://discord.gg/dn98Bs9M`;
 
 //
 const BOT_DEVELOPED_MESSAGE = `Bot developed by zvinniie#0484`;
